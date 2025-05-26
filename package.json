@@ -5,9 +5,9 @@
   "author": "Tony11081",
   "license": "MIT",
   "scripts": {
-    "start": "npx medusa start",
-    "build": "npx medusa build",
-    "dev": "npx medusa develop"
+    "start": "node ./node_modules/@medusajs/medusa/dist/bin/medusa.js start",
+    "build": "node ./node_modules/@medusajs/medusa/dist/bin/medusa.js build",
+    "dev": "node ./node_modules/@medusajs/medusa/dist/bin/medusa.js develop"
   },
   "dependencies": {
     "@medusajs/medusa": "^1.20.0",
@@ -16,7 +16,8 @@
     "medusa-interfaces": "^1.3.8",
     "medusa-payment-manual": "^1.0.24",
     "medusa-payment-stripe": "^6.0.7",
-    "typeorm": "^0.3.20"
+    "typeorm": "^0.3.20",
+    "reflect-metadata": "^0.2.1"
   },
   "repository": "https://github.com/Tony11081/Medusa.git"
 } 
