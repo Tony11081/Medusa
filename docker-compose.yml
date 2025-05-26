@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: medusa
+      POSTGRES_PASSWORD: medusa
+      POSTGRES_DB: medusa
+    volumes:
+      - medusa-postgres:/var/lib/postgresql/data
+    networks:
+      - dokploy-network
+
+  redis:
+    image: redis:7
+    volumes:
+      - medusa-redis:/data
+    networks:
+      - dokploy-network
+
+  medusa:
+    build: .
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      DATABASE_URL: postgres://medusa:medusa@postgres:5432/medusa
+      REDIS_URL: redis://redis:6379
+      COOKIE_SECRET: ${COOKIE_SECRET}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_CORS: https://api.your-domain.com
+      STORE_CORS: https://api.your-domain.com
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.medusa.rule=Host(`api.your-domain.com`)"
+      - "traefik.http.services.medusa.loadbalancer.server.port=9000"
+    networks:
+      - dokploy-network
+
+volumes:
+  medusa-postgres:
+  medusa-redis:
+
+networks:
+  dokploy-network:
+    external: true 
